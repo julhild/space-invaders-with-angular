@@ -1,4 +1,8 @@
 <div class="game-area">
-  <app-game-info *ngIf="gameMode !== 'play'"></app-game-info>
+  <app-game-info
+    [gameMode]="gameMode"
+    (playClick)="onPlayMode()"
+    *ngIf="gameMode !== 'play'"
+  ></app-game-info>
   <app-play *ngIf="gameMode === 'play'"></app-play>
 </div>

@@ -1,1 +1,10 @@
-<p>game-over works!</p>
+<div class="info-area">
+  <h1 *ngIf="gameMode !== 'welcome'">You {{ gameMode }}!</h1>
+  <h3 *ngIf="gameMode === 'welcome'">
+    Destroy all the invaders and save the world!
+  </h3>
+  <button (click)="onClickPlay()">
+    Play
+    <span *ngIf="gameMode !== 'welcome'"> Again</span>
+  </button>
+</div>

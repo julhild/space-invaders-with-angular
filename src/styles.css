@@ -61,13 +61,43 @@ header i {
   height: 88vh;
   width: var(--game-width);
   position: relative;
-  background: #333;
-  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.4);
   margin: 5px auto;
   border: 1px var(--secondary-color) solid;
   border-radius: 5px;
 }
 
 .info-area {
+  height: 86vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+}
+
+.info-area button {
+  display: inline-block;
+  margin-top: 100px;
+  background-color: var(--secondary-color);
+  color: #333;
+  width: 200px;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.info-area button:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+
+.defender-ship {
+  color: #fff;
+  max-width: 50px;
+  height: auto;
 }
