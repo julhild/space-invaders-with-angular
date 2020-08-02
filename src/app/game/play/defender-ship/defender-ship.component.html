@@ -1,1 +1,7 @@
-<img class="defender-ship" #ship src="/assets/figures/defender_ship.png" />
+<img
+  [@defenderShip]="state"
+  #ship
+  class="defender-ship"
+  src="/assets/figures/defender_ship.png"
+  (keydown.arrowleft)="onArrowLeft()"
+/>

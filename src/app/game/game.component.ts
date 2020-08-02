@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
-  gameMode = 'welcome';
+  gameMode = 'play';
   // welcome, play, lost, won
 
   constructor() {}

@@ -95,9 +95,13 @@ header i {
   color: #333;
 }
 
-
 .defender-ship {
+  position: absolute;
   color: #fff;
-  max-width: 50px;
-  height: auto;
+  height: 50px;
+  width: 50px;
+  /* game-area - ship height */
+  top: calc(88vh - 50px);
+  /* left: 225px; */
+  transition: 0.1s ease-in-out;
 }
