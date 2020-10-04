@@ -105,3 +105,12 @@ header i {
   /* left: 225px; */
   transition: 0.1s ease-in-out;
 }
+
+
+.bullet {
+  position: absolute;
+  height: 12px;
+  width: 4px;
+  background-color: #ff5700;
+  /* top: calc(88vh - 50px); */
+}

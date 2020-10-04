@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { PlayComponent } from './game/play/play.component';
 import { GameInfoComponent } from './game/game-info/game-info.component';
-import { DefenderShipComponent } from './game/play/defender-ship/defender-ship.component';
+import { BulletComponent } from './game/play/bullet/bullet.component';
+
+import { PlaceholderDirective } from './game/play/placeholder.directive';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { DefenderShipComponent } from './game/play/defender-ship/defender-ship.c
     GameComponent,
     PlayComponent,
     GameInfoComponent,
-    DefenderShipComponent,
+    BulletComponent,
+    PlaceholderDirective,
   ],
   imports: [BrowserModule, BrowserAnimationsModule],
   providers: [],

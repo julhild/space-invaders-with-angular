@@ -1,11 +1,10 @@
 <div class="play-area">
-  <div>
-    <!-- <app-defender-ship></app-defender-ship> -->
-    <img
-      #defender
-      [style.left]="defenderPosition + 'px'"
-      class="defender-ship"
-      src="/assets/figures/defender_ship.png"
-    />
-  </div>
+  <ng-template appPlaceholder></ng-template>
+
+  <img
+    #defender
+    [style.left.px]="defenderPosition"
+    class="defender-ship"
+    src="/assets/figures/defender_ship.png"
+  />
 </div>
