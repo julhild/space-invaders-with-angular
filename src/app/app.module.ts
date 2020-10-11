@@ -9,6 +9,7 @@ import { GameInfoComponent } from './game/game-info/game-info.component';
 import { BulletComponent } from './game/play/bullet/bullet.component';
 
 import { PlaceholderDirective } from './game/play/placeholder.directive';
+import { InvaderComponent } from './game/invader/invader.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PlaceholderDirective } from './game/play/placeholder.directive';
     GameInfoComponent,
     BulletComponent,
     PlaceholderDirective,
+    InvaderComponent,
   ],
   imports: [BrowserModule, BrowserAnimationsModule],
   providers: [],

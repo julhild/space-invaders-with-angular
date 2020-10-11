@@ -21,7 +21,6 @@ export class PlayComponent implements OnInit, OnDestroy {
   shootLastPressed = null;
 
   private bulletRefs: ComponentRef<BulletComponent>[] = [];
-  private viewIndex = 0;
 
   @ViewChild(PlaceholderDirective, { static: false })
   bulletHost: PlaceholderDirective;

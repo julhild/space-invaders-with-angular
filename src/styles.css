@@ -1,6 +1,9 @@
 :root {
   --primary-color: #46431f;
+  /* RGB(165, 158, 73) */
   --secondary-color: #ffd700;
+  /* RGB(49, 90, 125) */
+  --steel-blue: #315a7d;
   --game-width: 500px;
 }
 
@@ -106,11 +109,16 @@ header i {
   transition: 0.1s ease-in-out;
 }
 
-
 .bullet {
   position: absolute;
   height: 12px;
   width: 4px;
   background-color: #ff5700;
   /* top: calc(88vh - 50px); */
+}
+
+.invaderImage {
+  color: var(--secondary-color);
+  width: 30px;
+  height: 25px;
 }
