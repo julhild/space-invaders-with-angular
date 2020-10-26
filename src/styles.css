@@ -17,7 +17,6 @@ body {
   font: normal 1rem/1.5 "Arial", sanf-serif;
   color: #fff;
   overflow-x: hidden;
-  /* padding-bottom: 50px; */
 }
 
 .container {
@@ -98,6 +97,16 @@ header i {
   color: #333;
 }
 
+.invaders-container {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  place-items: center;
+  width: 250px;
+  margin: 5px;
+  transition: 0.5s ease-in;
+}
+
 .defender-ship {
   position: absolute;
   color: #fff;
@@ -105,7 +114,6 @@ header i {
   width: 50px;
   /* game-area - ship height */
   top: calc(88vh - 50px);
-  /* left: 225px; */
   transition: 0.1s ease-in-out;
 }
 
@@ -118,7 +126,6 @@ header i {
 }
 
 .invaderImage {
-  color: var(--secondary-color);
   width: 30px;
   height: 25px;
 }

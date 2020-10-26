@@ -1,12 +1,14 @@
 <div class="play-area">
   <ng-template appPlaceholder></ng-template>
 
-  <app-invader></app-invader>
+  <div [@invadersContainer]="state" class="invaders-container" [style.top.px]="invadersPositionTop">
+      <app-invader [invaderIndex]="i" *ngFor="let invader of invaders; let i = index"></app-invader>
+  </div>
 
   <img
     #defender
-    [style.left.px]="defenderPosition"
+    [style.left.px]="shipPosition"
     class="defender-ship"
-    src="/assets/figures/defender_ship.png"
+    [src]="shipIcon"
   />
 </div>

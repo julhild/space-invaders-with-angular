@@ -1,44 +1,39 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  trigger,
-  style,
-  animate,
-  transition,
-  state,
-} from '@angular/animations';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-invader',
   templateUrl: './invader.component.html',
   styleUrls: ['./invader.component.css'],
-  animations: [
-    trigger('invader', [
-      state('invisible', style({ opacity: '0', visibility: 'hidden' })),
-      state('visible', style({ opacity: '1', visibility: 'visible' })),
-      transition('invisible <=> visible', animate('1s')),
-    ]),
-  ],
+
 })
 export class InvaderComponent implements OnInit, OnDestroy {
+  @Input() invaderIndex: number;
   subscription: Subscription;
-  state = 'visible';
+  state = 'left';
   index = 0;
-  iconPath = '/assets/figures/invader1_state2.png';
-  invadersArray = [
+  positionLeft = 0;
+  iconArray: Array<string>;
+  invadersArray1 = [
     '/assets/figures/invader1_state1.png',
     '/assets/figures/invader1_state2.png',
+  ];
+
+  invadersArray2 = [
+    '/assets/figures/invader2_state1.png',
+    '/assets/figures/invader2_state2.png',
   ];
 
   constructor() {}
 
   ngOnInit(): void {
-    this.subscription = interval(2000).subscribe((x) => {
-      // console.log(x);
-      // this.state = this.state === 'visible' ? 'invisible' : 'visible';
-      // if (x % 2 === 0) {
-      //   this.index = (x / 2) % 3;
-      // }
+    this.positionLeft = this.invaderIndex * 45;
+    this.iconArray = (this.invaderIndex % 12 < 6) ? (this.invaderIndex % 2 ? this.invadersArray1 : this.invadersArray2)
+      : (this.invaderIndex % 2 ? this.invadersArray2 : this.invadersArray1);
+    this.subscription = interval(150).subscribe((x) => {
+      if (x % 2 === 0) {
+        this.index = (x / 2) % 2;
+      }
     });
   }
 

@@ -7,18 +7,45 @@ import {
   ViewChild,
   ComponentFactoryResolver,
   Injector,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
+import { trigger, style, animate, transition, state } from '@angular/animations';
+import { InvaderComponent } from '../invader/invader.component';
 import { BulletComponent } from './bullet/bullet.component';
 import { PlaceholderDirective } from './placeholder.directive';
+import { interval, Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-play',
   templateUrl: './play.component.html',
   styleUrls: ['./play.component.css'],
+    animations: [
+    trigger('invadersContainer', [
+      state('left', style({
+        transform: 'translateX(240px)'
+      })),
+      state('right', style({
+        transform: 'translateX(0px)'
+      })),
+      transition('left <=> right', animate(3000)),
+      transition('void <=> left', animate(0))
+    ]),
+  ]
 })
 export class PlayComponent implements OnInit, OnDestroy {
-  defenderPosition = 225;
+  shipPosition = 225;
+  shipIcon = '/assets/figures/defender_ship.png';
   shootLastPressed = null;
+  numberOfInvaders = 15;
+  invaders = new Array(18);
+  state = 'right';
+  invadersPositionTop = 0;
+
+  subscription: Subscription;
+
+  @ViewChildren(InvaderComponent) invaderComponents: QueryList<InvaderComponent>;
 
   private bulletRefs: ComponentRef<BulletComponent>[] = [];
 
@@ -29,6 +56,18 @@ export class PlayComponent implements OnInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector
   ) {}
+
+  ngOnInit(): void {
+    this.subscription = interval(500).subscribe((x) => {
+      if (x % 7 === 0) {
+        this.state = x % 14 === 0 ? 'left' : 'right';
+      }
+
+      if ((x + 1) % 7 === 0) {
+        this.invadersPositionTop += 10;
+      }
+    });
+  }
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -47,22 +86,16 @@ export class PlayComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {
-    const bulletFactory = this.componentFactoryResolver.resolveComponentFactory(
-      BulletComponent
-    );
-  }
-
   onArrowLeft() {
-    if (this.defenderPosition > 10) {
-      this.defenderPosition -= 10;
+    if (this.shipPosition > 10) {
+      this.shipPosition -= 10;
     }
     return;
   }
 
   onArrowRight() {
-    if (this.defenderPosition < 440) {
-      this.defenderPosition += 10;
+    if (this.shipPosition < 440) {
+      this.shipPosition += 10;
     }
     return;
   }
@@ -85,7 +118,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     const bulletRef = bulletCmpFactory.create(this.injector);
 
     // defender position + middle of the defender - middle of the bullet
-    bulletRef.instance.positionX = this.defenderPosition + 23;
+    bulletRef.instance.positionX = this.shipPosition + 23;
     this.bulletRefs.push(bulletRef);
     hostViewContainerRef.insert(bulletRef.hostView);
 
