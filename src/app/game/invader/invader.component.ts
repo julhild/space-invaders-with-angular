@@ -7,6 +7,7 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./invader.component.css'],
 
 })
+
 export class InvaderComponent implements OnInit, OnDestroy {
   @Input() invaderIndex: number;
   subscription: Subscription;

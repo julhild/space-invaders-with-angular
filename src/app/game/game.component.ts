@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { eGameMode } from './game-mode.enum';
 
 @Component({
   selector: 'app-game',
@@ -6,14 +7,17 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
-  gameMode = 'play';
-  // welcome, play, lost, won
+  gameMode = eGameMode.welcome;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   onPlayMode() {
-    this.gameMode = 'play';
+    this.gameMode = eGameMode.play;
+  }
+
+  onGameModeChanged(newGameMode: eGameMode): void {
+    this.gameMode = newGameMode;
   }
 }

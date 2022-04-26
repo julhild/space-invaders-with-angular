@@ -8,13 +8,14 @@ import {
   ComponentFactoryResolver,
   Injector,
   ViewChildren,
-  QueryList,
+  QueryList, EventEmitter, Output
 } from '@angular/core';
 import { trigger, style, animate, transition, state } from '@angular/animations';
 import { InvaderComponent } from '../invader/invader.component';
 import { BulletComponent } from './bullet/bullet.component';
 import { PlaceholderDirective } from './placeholder.directive';
 import { interval, Subscription } from 'rxjs';
+import { eGameMode } from '../game-mode.enum';
 
 
 @Component({
@@ -23,24 +24,29 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./play.component.css'],
     animations: [
     trigger('invadersContainer', [
-      state('left', style({
+      state('right', style({
         transform: 'translateX(240px)'
       })),
-      state('right', style({
+      state('left', style({
         transform: 'translateX(0px)'
       })),
       transition('left <=> right', animate(3000)),
-      transition('void <=> left', animate(0))
-    ]),
+      transition('void <=> left', animate(0)),
+      transition('void <=> right', animate(0))
+    ])
   ]
 })
+
 export class PlayComponent implements OnInit, OnDestroy {
+
+  @Output() changeGameMode = new EventEmitter<string>();
+  // this.changeGameMode.emit(eGameMode.won);
   shipPosition = 225;
   shipIcon = '/assets/figures/defender_ship.png';
   shootLastPressed = null;
-  numberOfInvaders = 15;
+  // numberOfInvaders = 15;
   invaders = new Array(18);
-  state = 'right';
+  state = 'left';
   invadersPositionTop = 0;
 
   subscription: Subscription;
@@ -60,7 +66,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = interval(500).subscribe((x) => {
       if (x % 7 === 0) {
-        this.state = x % 14 === 0 ? 'left' : 'right';
+        this.state = x % 14 === 0 ? 'right' : 'left';
       }
 
       if ((x + 1) % 7 === 0) {
@@ -71,8 +77,6 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    // console.log(event);
-
     if (event.code === 'ArrowRight') {
       this.onArrowRight();
     }

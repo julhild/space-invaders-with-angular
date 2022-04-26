@@ -2,7 +2,10 @@
   <app-game-info
     [gameMode]="gameMode"
     (playClick)="onPlayMode()"
-    *ngIf="gameMode !== 'play'"
-  ></app-game-info>
-  <app-play *ngIf="gameMode === 'play'"></app-play>
+    *ngIf="gameMode !== 'play'">
+  </app-game-info>
+  <app-play
+    (changeGameMode)="onGameModeChanged($event)"
+    *ngIf="gameMode === 'play'">
+  </app-play>
 </div>

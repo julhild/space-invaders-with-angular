@@ -104,7 +104,10 @@ header i {
   place-items: center;
   width: 250px;
   margin: 5px;
-  transition: 0.5s ease-in;
+  transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: none;
+  -o-transition: none;
 }
 
 .defender-ship {
@@ -128,4 +131,5 @@ header i {
 .invaderImage {
   width: 30px;
   height: 25px;
+  transition: 0.5s ease-in;
 }
