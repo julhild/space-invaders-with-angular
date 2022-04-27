@@ -17,6 +17,14 @@ import { PlaceholderDirective } from './placeholder.directive';
 import { interval, Subscription } from 'rxjs';
 import { eGameMode } from '../game-mode.enum';
 
+export class GameItem {
+  height: number;
+  top: number;
+  constructor(bondingRect: any) {
+    this.height = bondingRect.height;
+    this.top = bondingRect.top;
+  }
+}
 
 @Component({
   selector: 'app-play',
@@ -40,16 +48,17 @@ import { eGameMode } from '../game-mode.enum';
 export class PlayComponent implements OnInit, OnDestroy {
 
   @Output() changeGameMode = new EventEmitter<string>();
-  // this.changeGameMode.emit(eGameMode.won);
+
   shipPosition = 225;
   shipIcon = '/assets/figures/defender_ship.png';
   shootLastPressed = null;
-  // numberOfInvaders = 15;
   invaders = new Array(18);
   state = 'left';
   invadersPositionTop = 0;
+  gameState: any;
+  defender: GameItem;
 
-  subscription: Subscription;
+  moveInvaders: Subscription;
 
   @ViewChildren(InvaderComponent) invaderComponents: QueryList<InvaderComponent>;
 
@@ -64,15 +73,40 @@ export class PlayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscription = interval(500).subscribe((x) => {
+    this.defender = new GameItem(document.querySelector('.defender-ship').getBoundingClientRect());
+    this.moveInvaders = this.shiftInvaders();
+    this.gameState = setInterval(() => this.checkGameState(), 500);
+
+  }
+
+  checkGameState(): void {
+    const currentInvaders: HTMLDivElement[] = Array.from(document.querySelectorAll('.invader'));
+
+
+    for (const invader of currentInvaders) {
+      const dims = invader.getBoundingClientRect();
+
+      if (dims.top + dims.height >= this.defender.top) {
+          this.changeGameMode.emit(eGameMode.lost);
+      }
+    }
+
+
+  }
+
+  shiftInvaders(): Subscription {
+    const verticalShift = 100;
+    const invaderShift = interval(500).subscribe((x) => {
       if (x % 7 === 0) {
         this.state = x % 14 === 0 ? 'right' : 'left';
       }
 
       if ((x + 1) % 7 === 0) {
-        this.invadersPositionTop += 10;
+        this.invadersPositionTop += verticalShift;
       }
     });
+
+    return invaderShift;
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -138,5 +172,8 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.bulletHost.viewContainerRef.clear();
+    clearInterval(this.gameState);
+
+    this.moveInvaders.unsubscribe();
   }
 }
