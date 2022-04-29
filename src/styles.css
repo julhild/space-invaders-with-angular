@@ -134,3 +134,18 @@ header i {
   height: 25px;
   transition: 0.5s ease-in;
 }
+
+
+.explosion {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border-radius: 50%;
+  animation: boom 1.5s;
+}
+
+@keyframes boom {
+  0%   {background-color: transparent;}
+  50%  {background: radial-gradient(red, rgb(231, 231, 170));}
+  100% {background: transparent;}
+}

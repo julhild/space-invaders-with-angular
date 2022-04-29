@@ -17,15 +17,6 @@ import { PlaceholderDirective } from './placeholder.directive';
 import { interval, Subscription } from 'rxjs';
 import { eGameMode } from '../game-mode.enum';
 
-export class GameItem {
-  height: number;
-  top: number;
-  constructor(bondingRect: any) {
-    this.height = bondingRect.height;
-    this.top = bondingRect.top;
-  }
-}
-
 @Component({
   selector: 'app-play',
   templateUrl: './play.component.html',
@@ -56,7 +47,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   state = 'left';
   invadersPositionTop = 0;
   gameState: any;
-  defender: GameItem;
+  defender: any;
 
   moveInvaders: Subscription;
 
@@ -73,29 +64,49 @@ export class PlayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.defender = new GameItem(document.querySelector('.defender-ship').getBoundingClientRect());
+    this.defender = document.querySelector('.defender-ship').getBoundingClientRect();
     this.moveInvaders = this.shiftInvaders();
-    this.gameState = setInterval(() => this.checkGameState(), 500);
+    this.gameState = setInterval(() => this.checkGameState(), 200);
 
   }
 
   checkGameState(): void {
     const currentInvaders: HTMLDivElement[] = Array.from(document.querySelectorAll('.invader'));
+    const bullets = Array.from(document.querySelectorAll('.bullet'));
+
+    if (currentInvaders.length > 0) {
+      for (const invader of currentInvaders) {
+        const invBox = invader.getBoundingClientRect();
+
+        // an invader reaches the bottom
+        if (invBox.top + invBox.height >= this.defender.top) {
+            this.changeGameMode.emit(eGameMode.lost);
+        }
+
+        // check if a bullet hits an invader
+        for (const bullet of bullets) {
+          const bulletBox: DOMRect = bullet.getBoundingClientRect();
+
+          const horisontalHit = bulletBox.x >= invBox.x && bulletBox.right <= invBox.right;
+          const verticalHit = bulletBox.top <= invBox.bottom && bulletBox.bottom >= invBox.top;
 
 
-    for (const invader of currentInvaders) {
-      const dims = invader.getBoundingClientRect();
-
-      if (dims.top + dims.height >= this.defender.top) {
-          this.changeGameMode.emit(eGameMode.lost);
+          if (horisontalHit && verticalHit) {
+            invader.innerHTML = '';
+            invader.className = 'explosion';
+            bullet.className = '';
+          }
+        }
       }
+    } else {
+      this.changeGameMode.emit(eGameMode.won);
     }
 
 
   }
 
   shiftInvaders(): Subscription {
-    const verticalShift = 100;
+    const verticalShift = 25;
     const invaderShift = interval(500).subscribe((x) => {
       if (x % 7 === 0) {
         this.state = x % 14 === 0 ? 'right' : 'left';
@@ -109,6 +120,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     return invaderShift;
   }
 
+  // defender actions
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.code === 'ArrowRight') {
